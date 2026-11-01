@@ -1,68 +1,56 @@
 @extends('layouts.app')
 
-@section('title', 'About Us - Plant Store')
+@section('title', __('messages.nav_about') . ' — ' . __('messages.store_name'))
 
 @section('content')
-<div class="container">
-    <h1 style="text-align: center; margin-bottom: 2rem;">🌱 About Plant Store</h1>
+<div class="container" style="background-color: transparent; padding: 0;">
+    <div style="text-align: center; margin-bottom: 3.5rem;">
+        <span class="category-badge" style="margin-bottom: 1rem;">{{ __('messages.about_heritage_tag') }}</span>
+        <h1 style="font-weight: 480; letter-spacing: 0.015em; font-size: var(--text-heading-lg);">{{ __('messages.about_title') }}</h1>
+        <p style="color: var(--color-ash-text); max-width: 620px; margin: 0 auto; font-size: var(--text-body-lg); line-height: 1.7;">
+            {{ __('messages.about_subtitle') }}
+        </p>
+    </div>
     
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center; margin-bottom: 3rem;">
-        <div>
-            <h2>Our Mission</h2>
-            <p style="margin-bottom: 1rem;">
-                At Plant Store, we believe that bringing plants into your home or office can transform your space and improve your well-being. Our mission is to make quality plants accessible to everyone, regardless of their gardening experience.
-            </p>
-            <p style="margin-bottom: 1rem;">
-                We're passionate about sustainability and responsible plant sourcing. Every plant we offer has been grown with care and attention to quality standards.
-            </p>
-            <p>
-                Our team of experienced horticulturists is dedicated to helping you find the perfect plants for your lifestyle and providing the support you need to succeed.
-            </p>
-        </div>
-        <div style="text-align: center; font-size: 5rem; background-color: #eff6ff; border: 1px solid #dbeafe; padding: 2rem; border-radius: 8px;">
-            🌿
-        </div>
-    </div>
-
-    <div style="background-color: #1e3a8a; color: white; padding: 3rem; border-radius: 8px; margin-bottom: 3rem;">
-        <h2 style="color: #93c5fd; margin-bottom: 2rem; text-align: center;">Our Story</h2>
-        <p style="margin-bottom: 1rem;">
-            Plant Store was founded by a group of plant enthusiasts who wanted to share their passion for greenery with the world. What started as a small local nursery has grown into a thriving online destination for plant lovers everywhere.
+    <!-- Mission Section (Graphite Card) -->
+    <div style="background-color: var(--color-graphite-card); padding: var(--card-padding); border-radius: var(--radius-cards); border: 1px solid rgba(226, 227, 237, 0.04); margin-bottom: 2.5rem; text-align: start;">
+        <h2 style="font-weight: 480; color: var(--color-ivory-text); font-size: var(--text-heading-sm); margin-bottom: 1.25rem;">
+            {{ __('messages.about_mission_title') }}
+        </h2>
+        <p style="color: var(--color-ash-text); margin-bottom: 1.25rem; font-size: var(--text-body); line-height: 1.7;">
+            {{ __('messages.about_mission_p1') }}
         </p>
-        <p style="margin-bottom: 1rem;">
-            We've served thousands of happy customers and helped people create their dream gardens and indoor jungles. Each year, we expand our selection and improve our services to better serve our community.
-        </p>
-        <p>
-            Today, Plant Store continues to uphold the values of quality, sustainability, and customer satisfaction that have made us successful from the start.
+        <p style="color: var(--color-ash-text); font-size: var(--text-body); line-height: 1.7;">
+            {{ __('messages.about_mission_p2') }}
         </p>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
-        <div style="background: #f8faff; border: 1px solid #e2e8f0; padding: 2rem; border-radius: 8px; text-align: center;">
-            <h3 style="font-size: 2.5rem; color: #2563eb; margin-bottom: 0.5rem;">10K+</h3>
-            <p>Happy Customers</p>
+    <!-- Stats Grid (Graphite Cards) -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-bottom: 2.5rem;">
+        <div style="background-color: var(--color-graphite-card); padding: var(--card-padding); border-radius: var(--radius-cards); text-align: center; border: 1px solid rgba(226, 227, 237, 0.04);">
+            <div style="font-size: var(--text-heading-lg); font-weight: 480; color: var(--color-pure-white); margin-bottom: 0.5rem; letter-spacing: 0.02em;">{{ __('messages.about_stat_1_val') }}</div>
+            <p style="color: var(--color-ash-text); font-size: var(--text-body-sm);">{{ __('messages.about_stat_1_label') }}</p>
         </div>
-        <div style="background: #f8faff; border: 1px solid #e2e8f0; padding: 2rem; border-radius: 8px; text-align: center;">
-            <h3 style="font-size: 2.5rem; color: #2563eb; margin-bottom: 0.5rem;">500+</h3>
-            <p>Plant Varieties</p>
+        <div style="background-color: var(--color-graphite-card); padding: var(--card-padding); border-radius: var(--radius-cards); text-align: center; border: 1px solid rgba(226, 227, 237, 0.04);">
+            <div style="font-size: var(--text-heading-lg); font-weight: 480; color: var(--color-pure-white); margin-bottom: 0.5rem; letter-spacing: 0.02em;">{{ __('messages.about_stat_2_val') }}</div>
+            <p style="color: var(--color-ash-text); font-size: var(--text-body-sm);">{{ __('messages.about_stat_2_label') }}</p>
         </div>
-        <div style="background: #f8faff; border: 1px solid #e2e8f0; padding: 2rem; border-radius: 8px; text-align: center;">
-            <h3 style="font-size: 2.5rem; color: #2563eb; margin-bottom: 0.5rem;">99%</h3>
-            <p>Satisfaction Rate</p>
+        <div style="background-color: var(--color-graphite-card); padding: var(--card-padding); border-radius: var(--radius-cards); text-align: center; border: 1px solid rgba(226, 227, 237, 0.04);">
+            <div style="font-size: var(--text-heading-lg); font-weight: 480; color: var(--color-pure-white); margin-bottom: 0.5rem; letter-spacing: 0.02em;">{{ __('messages.about_stat_3_val') }}</div>
+            <p style="color: var(--color-ash-text); font-size: var(--text-body-sm);">{{ __('messages.about_stat_3_label') }}</p>
         </div>
     </div>
 
-    <h2 style="text-align: center; margin-bottom: 2rem;">Our Team</h2>
-    <p style="text-align: center; margin-bottom: 2rem;">
-        Our passionate team of plant experts is here to help you every step of your plant journey.
-    </p>
-
-    <div style="background-color: #eff6ff; border: 1px solid #dbeafe; padding: 2rem; border-radius: 8px; text-align: center;">
-        <p style="font-size: 1.1rem; color: #475569;">
-            Have questions? Want to join our team? Get in touch with us!
+    <!-- Contact CTA Banner (Graphite Card) -->
+    <div style="background-color: var(--color-graphite-card); padding: 48px var(--card-padding); border-radius: var(--radius-cards); text-align: center; border: 1px solid rgba(226, 227, 237, 0.04);">
+        <h3 style="font-weight: 480; color: var(--color-ivory-text); font-size: var(--text-heading-sm); margin-bottom: 0.75rem;">
+            {{ __('messages.about_cta_title') }}
+        </h3>
+        <p style="color: var(--color-ash-text); font-size: var(--text-body); max-width: 520px; margin: 0 auto 2rem;">
+            {{ __('messages.about_cta_text') }}
         </p>
-        <a href="{{ route('contact') }}" class="btn btn-primary" style="margin-top: 1rem;">
-            Contact Us
+        <a href="{{ route('contact') }}" class="btn btn-primary" style="padding: 12px 36px;">
+            {{ __('messages.about_cta_btn') }}
         </a>
     </div>
 </div>

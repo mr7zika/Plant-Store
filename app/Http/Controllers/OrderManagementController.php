@@ -33,6 +33,6 @@ class OrderManagementController extends Controller
         $order->update(['status' => $validated['status']]);
 
         // العودة للصفحة السابقة مع رسالة نجاح
-        return back()->with('success', 'تم تحديث حالة الطلب بنجاح.');
+        return back()->with('success', __('messages.msg_order_status_updated'));
     }
 }

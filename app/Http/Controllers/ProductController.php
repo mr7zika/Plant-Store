@@ -42,7 +42,7 @@ class ProductController extends Controller
         ]);
 
         Product::create($validated);
-        return redirect()->route('products.index')->with('success', 'تم إضافة المنتج بنجاح');
+        return redirect()->route('products.index')->with('success', __('messages.msg_product_created'));
     }
 
     /**
@@ -79,7 +79,7 @@ class ProductController extends Controller
         ]);
 
         $product->update($validated);
-        return redirect()->route('products.show', $product)->with('success', 'تم تحديث المنتج بنجاح');
+        return redirect()->route('products.show', $product)->with('success', __('messages.msg_product_updated'));
     }
 
     /**
@@ -88,7 +88,7 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
-        return redirect()->route('products.index')->with('success', 'تم حذف المنتج بنجاح');
+        return redirect()->route('products.index')->with('success', __('messages.msg_product_deleted'));
     }
 }
 

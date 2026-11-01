@@ -1,167 +1,227 @@
 @extends('layouts.app')
 
-@section('title', 'Home - Plant Store')
+@section('title', __('messages.site_title'))
 
 @section('extra-css')
 <style>
-    .hero-section {
-        background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
-        color: white;
-        padding: 80px 20px;
+    .hero-container {
+        position: relative;
+        background: linear-gradient(180deg, rgba(23, 23, 33, 0.4) 0%, rgba(23, 23, 33, 0.95) 100%),
+                    radial-gradient(ellipse at 50% 20%, rgba(82, 102, 235, 0.15) 0%, transparent 70%),
+                    #171721;
+        padding: 100px 24px 80px;
         text-align: center;
-        border-radius: 8px;
-        margin-bottom: 3rem;
+        border-radius: var(--radius-cards);
+        margin-bottom: var(--section-gap);
+        border: 1px solid rgba(226, 227, 237, 0.06);
+    }
+    .hero-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background-color: var(--color-obsidian-button);
+        color: var(--color-ivory-text);
+        padding: 6px 18px;
+        border-radius: var(--radius-tags);
+        font-size: var(--text-caption);
+        letter-spacing: 0.04em;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(226, 227, 237, 0.08);
     }
     .hero-title {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        font-weight: 700;
+        font-size: clamp(2rem, 5vw, var(--text-display));
+        font-weight: 480;
+        line-height: 1.2;
+        letter-spacing: 0.015em;
+        color: var(--color-pure-white);
+        max-width: 820px;
+        margin: 0 auto 1.5rem;
     }
     .hero-subtitle {
-        font-size: 1.3rem;
-        margin-bottom: 2rem;
-        opacity: 0.95;
+        font-size: var(--text-body-lg);
+        color: var(--color-ash-text);
+        max-width: 620px;
+        margin: 0 auto 2.5rem;
+        line-height: 1.7;
+        font-weight: 400;
     }
-    .hero-cta {
-        display: inline-block;
-        background-color: #3b82f6;
-        color: white;
-        padding: 15px 40px;
-        text-decoration: none;
-        border-radius: 4px;
-        font-size: 1.1rem;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-    .hero-cta:hover {
-        background-color: white;
-        color: #1e3a8a;
-        transform: translateY(-2px);
+    .hero-cta-group {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
     }
     .features-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 2rem;
-        margin-bottom: 3rem;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+        margin-bottom: var(--section-gap);
     }
     .feature-card {
-        background: linear-gradient(135deg, #eff6ff 0%, #f0f7ff 100%);
-        padding: 2rem;
-        border-radius: 8px;
-        text-align: center;
-        border: 1px solid #dbeafe;
-        transition: all 0.3s ease;
+        background-color: var(--color-graphite-card);
+        padding: var(--card-padding);
+        border-radius: var(--radius-cards);
+        text-align: start;
+        border: 1px solid rgba(226, 227, 237, 0.04);
+        transition: background-color 0.2s ease;
     }
     .feature-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 4px 12px rgba(30, 58, 138, 0.1);
+        background-color: #232332;
     }
-    .feature-icon {
-        font-size: 3rem;
-        margin-bottom: 1rem;
+    .feature-icon-wrap {
+        width: 48px;
+        height: 48px;
+        border-radius: var(--radius-tags);
+        background-color: var(--color-obsidian-button);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
     }
     .feature-title {
-        color: #1e3a8a;
-        font-size: 1.3rem;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
+        color: var(--color-ivory-text);
+        font-size: var(--text-subheading);
+        font-weight: 480;
+        margin-bottom: 0.75rem;
+        letter-spacing: 0.015em;
     }
     .feature-text {
-        color: #666;
-        line-height: 1.6;
+        color: var(--color-ash-text);
+        font-size: var(--text-body);
+        line-height: 1.7;
     }
     .benefits-section {
-        background-color: white;
-        padding: 3rem;
-        border-radius: 8px;
-        margin-bottom: 2rem;
+        background-color: var(--color-graphite-card);
+        padding: 48px var(--card-padding);
+        border-radius: var(--radius-cards);
+        margin-bottom: var(--section-gap);
+        border: 1px solid rgba(226, 227, 237, 0.04);
     }
     .benefits-title {
         text-align: center;
-        color: #1e3a8a;
-        font-size: 2rem;
-        margin-bottom: 2rem;
+        color: var(--color-ivory-text);
+        font-size: var(--text-heading);
+        font-weight: 480;
+        margin-bottom: 3rem;
+        letter-spacing: 0.015em;
     }
     .benefit-item {
-        background-color: white;
-        padding: 1.5rem;
-        border-radius: 8px;
-        border-left: 4px solid #2563eb;
+        background-color: var(--color-onyx-canvas);
+        padding: 24px;
+        border-radius: var(--radius-cards);
         margin-bottom: 1rem;
+        border: 1px solid rgba(226, 227, 237, 0.04);
+        text-align: start;
     }
     .benefit-item:last-child {
         margin-bottom: 0;
     }
-    .benefit-icon {
-        font-size: 1.5rem;
-        margin-right: 0.5rem;
-    }
     .benefit-title {
-        color: #1e3a8a;
-        font-size: 1.2rem;
-        font-weight: 600;
+        color: var(--color-ivory-text);
+        font-size: var(--text-body-lg);
+        font-weight: 480;
         margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
     .benefit-text {
-        color: #666;
-        line-height: 1.6;
+        color: var(--color-ash-text);
+        font-size: var(--text-body-sm);
+        line-height: 1.7;
+    }
+    .cta-banner {
+        background: linear-gradient(180deg, var(--color-graphite-card) 0%, rgba(30, 30, 42, 0.6) 100%);
+        padding: 64px 32px;
+        border-radius: var(--radius-cards);
+        text-align: center;
+        border: 1px solid rgba(226, 227, 237, 0.06);
+    }
+    .cta-title {
+        font-size: var(--text-heading);
+        font-weight: 480;
+        color: var(--color-ivory-text);
+        margin-bottom: 1rem;
+    }
+    .cta-text {
+        font-size: var(--text-body);
+        color: var(--color-ash-text);
+        max-width: 540px;
+        margin: 0 auto 2rem;
     }
 </style>
 @endsection
 
 @section('content')
-<!-- Hero Section -->
-<div class="hero-section">
-    <h1 class="hero-title">🌱 Welcome to Plant Store</h1>
-    <p class="hero-subtitle">Transform Your Space with Beautiful, Healthy Plants</p>
-    <a href="{{ route('products.index') }}" class="hero-cta">Explore Our Collection →</a>
+<!-- Atmospheric Alpine Hero Section -->
+<div class="hero-container">
+    <div class="hero-tag">
+        <span>🌱</span>
+        <span>{{ __('messages.home_hero_tag') }}</span>
+    </div>
+    <h1 class="hero-title">{{ __('messages.home_hero_title') }}</h1>
+    <p class="hero-subtitle">
+        {{ __('messages.home_hero_subtitle') }}
+    </p>
+    <div class="hero-cta-group">
+        <a href="{{ route('products.index') }}" class="btn btn-primary" style="padding: 14px 36px;">
+            {{ __('messages.home_explore_collection') }}
+        </a>
+        <a href="{{ route('about') }}" class="btn btn-ghost" style="padding: 13px 28px;">
+            {{ __('messages.home_about_sourcing') }}
+        </a>
+    </div>
 </div>
 
-<!-- Features Section -->
+<!-- Features Section — Graphite Cards (No Shadows) -->
 <div class="features-grid">
     <div class="feature-card">
-        <div class="feature-icon">🌿</div>
-        <h3 class="feature-title">Fresh & Healthy</h3>
-        <p class="feature-text">Carefully curated selection of healthy, vibrant plants for every skill level</p>
+        <div class="feature-icon-wrap">🌿</div>
+        <h3 class="feature-title">{{ __('messages.home_feat_1_title') }}</h3>
+        <p class="feature-text">{{ __('messages.home_feat_1_text') }}</p>
     </div>
 
     <div class="feature-card">
-        <div class="feature-icon">🚚</div>
-        <h3 class="feature-title">Fast Delivery</h3>
-        <p class="feature-text">Quick and safe shipping right to your doorstep with proper packaging</p>
+        <div class="feature-icon-wrap">📦</div>
+        <h3 class="feature-title">{{ __('messages.home_feat_2_title') }}</h3>
+        <p class="feature-text">{{ __('messages.home_feat_2_text') }}</p>
     </div>
 
     <div class="feature-card">
-        <div class="feature-icon">💙</div>
-        <h3 class="feature-title">Expert Support</h3>
-        <p class="feature-text">Get care tips and advice from our experienced plant experts</p>
+        <div class="feature-icon-wrap">🧭</div>
+        <h3 class="feature-title">{{ __('messages.home_feat_3_title') }}</h3>
+        <p class="feature-text">{{ __('messages.home_feat_3_text') }}</p>
     </div>
 </div>
 
-<!-- Benefits Section -->
+<!-- Benefits Section — Graphite Surface -->
 <div class="benefits-section">
-    <h2 class="benefits-title">Why Choose Plant Store?</h2>
+    <h2 class="benefits-title">{{ __('messages.home_benefits_title') }}</h2>
     
     <div class="benefit-item">
-        <h3 class="benefit-title"><span class="benefit-icon">🌱</span>Premium Quality Plants</h3>
-        <p class="benefit-text">Every plant is handpicked and checked for health before shipment. We source from trusted growers and nurseries to ensure you receive the best.</p>
+        <h3 class="benefit-title"><span>🌱</span> {{ __('messages.home_benefit_1_title') }}</h3>
+        <p class="benefit-text">{{ __('messages.home_benefit_1_text') }}</p>
     </div>
 
     <div class="benefit-item">
-        <h3 class="benefit-title"><span class="benefit-icon">📖</span>Care Instructions Included</h3>
-        <p class="benefit-text">Each plant comes with detailed care instructions specific to its species, helping you keep it thriving in your home or office.</p>
+        <h3 class="benefit-title"><span>📖</span> {{ __('messages.home_benefit_2_title') }}</h3>
+        <p class="benefit-text">{{ __('messages.home_benefit_2_text') }}</p>
     </div>
 
     <div class="benefit-item">
-        <h3 class="benefit-title"><span class="benefit-icon">💯</span>Satisfaction Guaranteed</h3>
-        <p class="benefit-text">We stand behind every plant we sell. If you're not satisfied with your purchase, we'll make it right.</p>
+        <h3 class="benefit-title"><span>🛡️</span> {{ __('messages.home_benefit_3_title') }}</h3>
+        <p class="benefit-text">{{ __('messages.home_benefit_3_text') }}</p>
     </div>
 </div>
 
-<!-- Call to Action -->
-<div style="background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: white; padding: 3rem; border-radius: 8px; text-align: center;">
-    <h2 style="color: #93c5fd; margin-bottom: 1rem;">Ready to Start Your Green Journey?</h2>
-    <p style="margin-bottom: 1.5rem; font-size: 1.1rem;">Browse our collection and find the perfect plant for your space</p>
-    <a href="{{ route('products.index') }}" class="hero-cta" style="display: inline-block;">Shop Now 🛒</a>
+<!-- Call to Action Banner -->
+<div class="cta-banner">
+    <h2 class="cta-title">{{ __('messages.home_cta_title') }}</h2>
+    <p class="cta-text">{{ __('messages.home_cta_text') }}</p>
+    <a href="{{ route('products.index') }}" class="btn btn-primary" style="padding: 14px 40px;">
+        {{ __('messages.home_cta_btn') }}
+    </a>
 </div>
 @endsection

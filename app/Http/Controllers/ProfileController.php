@@ -25,13 +25,13 @@ class ProfileController extends Controller
     {
         // التحقق من أن الطلب يخص المستخدم الحالي لأسباب أمنية
         if ($order->user_id !== Auth::id()) {
-            abort(403, 'غير مسموح لك بإلغاء هذا الطلب.');
+            abort(403, __('messages.msg_unauthorized_order_cancel'));
         }
 
         // حذف الطلب (سيقوم تلقائياً بتشغيل الـ booted وإرجاع الكميات للمخزون)
         $order->delete();
 
-        return redirect()->route('profile.index')->with('success', 'تم إلغاء الطلب بنجاح وإرجاع المنتجات للمخزون.');
+        return redirect()->route('profile.index')->with('success', __('messages.msg_order_cancelled_success'));
     }
 
     /**
@@ -43,6 +43,6 @@ class ProfileController extends Controller
         session()->invalidate();
         session()->regenerateToken();
 
-        return redirect('/')->with('success', 'تم تسجيل الخروج بنجاح');
+        return redirect('/')->with('success', __('messages.msg_logout_success'));
     }
 }

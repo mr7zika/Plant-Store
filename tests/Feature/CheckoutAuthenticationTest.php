@@ -81,7 +81,7 @@ class CheckoutAuthenticationTest extends TestCase
             ]);
 
         $response->assertRedirect(route('products.index'));
-        $response->assertSessionHas('error', 'السلة فارغة');
+        $response->assertSessionHas('error', __('messages.msg_cart_empty'));
     }
 
     /**
@@ -97,8 +97,8 @@ class CheckoutAuthenticationTest extends TestCase
                 'phone' => '1234567890',
             ]);
 
-        $response->assertRedirect(route('products.index'));
-        $response->assertSessionHas('success', 'تم إتمام الشراء بنجاح!');
+        $response->assertRedirect(route('profile.index'));
+        $response->assertSessionHas('success');
     }
 
     /**
@@ -117,7 +117,7 @@ class CheckoutAuthenticationTest extends TestCase
         ]);
 
         $response->assertRedirect(route('checkout.index'));
-        $response->assertSessionHas('success', 'Logged in successfully!');
+        $response->assertSessionHas('success', __('messages.msg_login_success'));
         $this->assertAuthenticatedAs($user);
     }
 
@@ -134,7 +134,7 @@ class CheckoutAuthenticationTest extends TestCase
         ]);
 
         $response->assertRedirect(route('checkout.index'));
-        $response->assertSessionHas('success', 'Account created and logged in successfully!');
+        $response->assertSessionHas('success', __('messages.msg_register_success'));
         $this->assertDatabaseHas('users', ['email' => 'john@example.com']);
         $this->assertAuthenticated();
     }

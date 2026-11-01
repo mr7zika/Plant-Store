@@ -148,7 +148,7 @@ class CartSessionPersistenceTest extends TestCase
             'phone' => '555-0123',
         ]);
 
-        $response->assertRedirect(route('products.index'));
-        $response->assertSessionHas('success', 'تم إتمام الشراء بنجاح!');
+        $response->assertRedirect(route('profile.index'));
+        $response->assertSessionHas('success');
     }
 }

@@ -7,6 +7,15 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\OrderManagementController;
 
+// Language switch route
+Route::get('/lang/{locale}', function (string $locale) {
+    if (in_array($locale, ['ar', 'en'])) {
+        session()->put('locale', $locale);
+        cookie()->queue(cookie()->forever('locale', $locale));
+    }
+    return redirect()->back(fallback: route('home'));
+})->name('lang.switch');
+
 // Home page
 Route::get('/', function () {
     return view('home');

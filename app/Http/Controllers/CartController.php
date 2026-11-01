@@ -19,7 +19,7 @@ class CartController extends Controller
 
         // التحقق الأول: هل الكمية المطلوبة حالياً أكبر من المخزون؟
         if ($product->quantity < $request->quantity) {
-            return redirect()->back()->with('error', "عذراً، الكمية المتاحة حالياً في المخزون هي {$product->quantity} فقط.");
+            return redirect()->back()->with('error', __('messages.msg_stock_limit_requested', ['count' => $product->quantity]));
         }
 
         $cart = $request->session()->get('cart', []);
@@ -28,7 +28,7 @@ class CartController extends Controller
         if (isset($cart[$product->id])) {
             $newQty = $cart[$product->id] + $request->quantity;
             if ($product->quantity < $newQty) {
-                return redirect()->back()->with('error', "عذراً، الكمية المتاحة حالياً في المخزون هي {$product->quantity} فقط. (لديك بالفعل {$cart[$product->id]} في سلتك)");
+                return redirect()->back()->with('error', __('messages.msg_stock_limit_combined', ['count' => $product->quantity, 'cart' => $cart[$product->id]]));
             }
             $cart[$product->id] = $newQty;
         } else {
@@ -36,7 +36,7 @@ class CartController extends Controller
         }
 
         $request->session()->put('cart', $cart);
-        return redirect()->route('cart.view')->with('success', "تم إضافة {$product->name} إلى السلة بنجاح!");
+        return redirect()->route('cart.view')->with('success', __('messages.msg_item_added', ['name' => $product->name]));
     }
 
     public function index(Request $request)
@@ -64,13 +64,13 @@ class CartController extends Controller
         $v = $request->validate(['product_id' => 'required|integer|exists:products,id', 'quantity' => 'required|integer|min:1']);
         $p = Product::findOrFail($v['product_id']);
         if ($p->quantity < $v['quantity']) {
-            return response()->json(['success' => false, 'message' => "عذراً، الكمية المتاحة هي {$p->quantity} فقط.", 'available' => $p->quantity], 400);
+            return response()->json(['success' => false, 'message' => __('messages.msg_stock_limit_requested', ['count' => $p->quantity]), 'available' => $p->quantity], 400);
         }
         $cart = $request->session()->get('cart', []);
         if (isset($cart[$p->id])) {
             $new = $cart[$p->id] + $v['quantity'];
             if ($p->quantity < $new) {
-                return response()->json(['success' => false, 'message' => "عذراً، الكمية المتاحة هي {$p->quantity} فقط.", 'available' => $p->quantity], 400);
+                return response()->json(['success' => false, 'message' => __('messages.msg_stock_limit_requested', ['count' => $p->quantity]), 'available' => $p->quantity], 400);
             }
             $cart[$p->id] = $new;
         } else {
@@ -96,7 +96,7 @@ class CartController extends Controller
             return response()->json(['success' => true, 'removed_id' => $productId, 'cart_total' => $tot['total'], 'cart_count' => $tot['count']]);
         }
         if ($p->quantity < $v['quantity']) {
-            return response()->json(['success' => false, 'message' => "عذراً، الكمية المتاحة هي {$p->quantity} فقط."], 400);
+            return response()->json(['success' => false, 'message' => __('messages.msg_stock_limit_requested', ['count' => $p->quantity])], 400);
         }
         $cart[$productId] = $v['quantity'];
         $request->session()->put('cart', $cart);

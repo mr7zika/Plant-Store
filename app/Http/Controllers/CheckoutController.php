@@ -23,7 +23,7 @@ class CheckoutController extends Controller
         $cartItems = $request->session()->get('cart', []);
         
         if (empty($cartItems)) {
-            return redirect()->route('products.index')->with('info', 'السلة فارغة');
+            return redirect()->route('products.index')->with('info', __('messages.msg_cart_empty'));
         }
 
         $products = Product::whereIn('id', array_keys($cartItems))->get();
@@ -55,7 +55,7 @@ class CheckoutController extends Controller
     public function process(Request $request)
     {
         if (!Auth::check()) {
-            return redirect()->route('checkout.index')->with('warning', 'يجب عليك تسجيل الدخول لإتمام الشراء.');
+            return redirect()->route('checkout.index')->with('warning', __('messages.msg_login_required_checkout'));
         }
 
         $validated = $request->validate([
@@ -66,7 +66,7 @@ class CheckoutController extends Controller
         $cartItems = $request->session()->get('cart', []);
         
         if (empty($cartItems)) {
-            return redirect()->route('products.index')->with('error', 'السلة فارغة');
+            return redirect()->route('products.index')->with('error', __('messages.msg_cart_empty'));
         }
 
         // بدء معاملة آمنة مع قاعدة البيانات لمنع تضارب الطلبات في نفس الثانية
@@ -84,7 +84,7 @@ class CheckoutController extends Controller
                 // إذا نفدت الكمية أو أصبحت أقل من المطلوب أثناء تواجد العميل في صفحة الدفع
                 if ($product->quantity < $quantity) {
                     DB::rollBack(); // التراجع عن أي تغييرات
-                    return redirect()->route('cart.view')->with('error', "عذراً، نفدت الكمية المطلوبة من منتج '{$product->name}' أثناء إتمام طلبك. المتاح حالياً هو {$product->quantity} فقط.");
+                    return redirect()->route('cart.view')->with('error', __('messages.msg_stock_depleted', ['name' => $product->name, 'count' => $product->quantity]));
                 }
                 
                 $subtotal = $product->price * $quantity;
@@ -121,11 +121,11 @@ class CheckoutController extends Controller
             DB::commit();
             $request->session()->forget('cart');
 
-            return redirect()->route('profile.index')->with('success', 'تم إتمام الطلب بنجاح! رقم الطلب: #' . $order->id);
+            return redirect()->route('profile.index')->with('success', __('messages.msg_order_success', ['id' => $order->id]));
 
         } catch (\Exception $e) {
             DB::rollBack(); // التراجع في حال حدوث أي خطأ برمجي
-            return redirect()->route('checkout.index')->with('error', 'حدث خطأ أثناء معالجة الطلب. يرجى المحاولة مرة أخرى.');
+            return redirect()->route('checkout.index')->with('error', __('messages.msg_order_error'));
         }
     }
 
@@ -151,7 +151,7 @@ class CheckoutController extends Controller
 
         if (!Auth::attempt($validated)) {
             throw ValidationException::withMessages([
-                'email' => 'البيانات المدخلة غير صحيحة.',
+                'email' => __('messages.msg_invalid_credentials'),
             ]);
         }
 
@@ -161,7 +161,7 @@ class CheckoutController extends Controller
             $request->session()->put('cart', $guestCart);
         }
 
-        return redirect()->route('checkout.index')->with('success', 'تم تسجيل الدخول بنجاح!');
+        return redirect()->route('checkout.index')->with('success', __('messages.msg_login_success'));
     }
 
     /**
@@ -171,7 +171,7 @@ class CheckoutController extends Controller
     {
         if ($request->hasCookie('device_registered')) {
             return redirect()->route('checkout.login')
-                ->with('warning', 'عذراً، يوجد حساب مسجل من هذا الجهاز بالفعل. يرجى تسجيل الدخول.');
+                ->with('warning', __('messages.msg_device_registered_warning'));
         }
 
         return view('checkout.register');
@@ -184,7 +184,7 @@ class CheckoutController extends Controller
     {
         if ($request->hasCookie('device_registered')) {
             return redirect()->route('checkout.login')
-                ->with('warning', 'يبدو أن لديك حساباً مسجلاً بالفعل على هذا الجهاز. يرجى تسجيل الدخول بدلاً من إنشاء حساب جديد.');
+                ->with('warning', __('messages.msg_device_registered_warning'));
         }
 
         $validated = $request->validate([
@@ -210,6 +210,6 @@ class CheckoutController extends Controller
 
         Cookie::queue('device_registered', 'true', 2628000);
 
-        return redirect()->route('checkout.index')->with('success', 'تم إنشاء الحساب وتسجيل الدخول بنجاح!');
+        return redirect()->route('checkout.index')->with('success', __('messages.msg_register_success'));
     }
 }
